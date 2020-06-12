@@ -63,3 +63,4 @@ Existe un [set de pruebas](assets/camunda-history-report.postman_collection.json
 
 ## Referencias
 * [Docs Camunda](https://docs.camunda.org/manual/latest/)
+* [Pitchme](https://gitpitch.com/jpOlivo/camunda-external-task#/)
