@@ -1,6 +1,4 @@
-![Camunda Logo](https://www.attuneww.com/wp-content/uploads/2018/07/Camunda.jpg)
-
-# Service Tasks
+# Camunda Service Tasks
 
 Presented by [Juan Olivera](https://jpolivo.github.io/resume/)
 
@@ -35,7 +33,7 @@ Presented by [Juan Olivera](https://jpolivo.github.io/resume/)
 
 ![External Task Pattern](https://docs.camunda.org/manual/7.8/user-guide/process-engine/img/external-task-pattern.png)
 
-----
+---
 ### Long Polling to Fetch and Lock 
 
 ![Long polling](https://docs.camunda.org/manual/latest/user-guide/process-engine/img/external-task-long-polling.png)
@@ -70,7 +68,7 @@ Presented by [Juan Olivera](https://jpolivo.github.io/resume/)
 
 # Demo
 
-----
+---
 
 ## Summary
 
