@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  process-engine:
+    build: ./process-engine
+    ports:
+    - 8080:8084    
+  account-worker:
+    build: ./account-worker
+    depends_on: 
+    - process-engine
+  cbu-worker:
+    build: ./cbu-worker
+    depends_on: 
+    - process-engine
+  alias-worker:
+    build: ./alias-worker
+    depends_on: 
+    - process-engine
+  loan-worker:
+    build: ./loan-worker
+    depends_on: 
+    - process-engine

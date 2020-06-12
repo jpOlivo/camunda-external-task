@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "bf8fdbdc-bb7b-4f05-9fea-2322618e07ee",
+		"name": "camunda-history-report",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Process Instance Duration - account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/engine-rest/history/process-instance/report?reportType=duration&periodUnit=quarter&processDefinitionKeyIn=accountCreationProcess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"engine-rest",
+						"history",
+						"process-instance",
+						"report"
+					],
+					"query": [
+						{
+							"key": "reportType",
+							"value": "duration"
+						},
+						{
+							"key": "periodUnit",
+							"value": "quarter"
+						},
+						{
+							"key": "processDefinitionKeyIn",
+							"value": "accountCreationProcess"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process Instance Count - account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/engine-rest/history/process-instance/count?processDefinitionKeyIn=accountCreationProcess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"engine-rest",
+						"history",
+						"process-instance",
+						"count"
+					],
+					"query": [
+						{
+							"key": "processDefinitionKeyIn",
+							"value": "accountCreationProcess"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process Instance Count - loan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/engine-rest/history/process-instance/count?processDefinitionKeyIn=loanApproval",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"engine-rest",
+						"history",
+						"process-instance",
+						"count"
+					],
+					"query": [
+						{
+							"key": "processDefinitionKeyIn",
+							"value": "loanApproval"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Process Instance Duration - loan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8084/engine-rest/history/process-instance/report?reportType=duration&periodUnit=quarter&processDefinitionKeyIn=loanApproval",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"engine-rest",
+						"history",
+						"process-instance",
+						"report"
+					],
+					"query": [
+						{
+							"key": "reportType",
+							"value": "duration"
+						},
+						{
+							"key": "periodUnit",
+							"value": "quarter"
+						},
+						{
+							"key": "processDefinitionKeyIn",
+							"value": "loanApproval"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

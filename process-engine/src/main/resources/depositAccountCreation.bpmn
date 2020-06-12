@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" id="Definitions_03p5xzs" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.7.3">
+  <bpmn:process id="accountCreationProcess" name="Account Creation Process" isExecutable="true">
+    <bpmn:startEvent id="accountCreationRequest" name="Deposit Account Creation Requested">
+      <bpmn:outgoing>Flow_065668u</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_065668u" sourceRef="accountCreationRequest" targetRef="mambuAccountCreation" />
+    <bpmn:serviceTask id="mambuAccountCreation" name="Account Creation" camunda:type="external" camunda:topic="account-creation">
+      <bpmn:incoming>Flow_065668u</bpmn:incoming>
+      <bpmn:outgoing>flowCbuCreationEvaluation</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_0j2vn5l" name="Is CBU creation required?">
+      <bpmn:incoming>flowCbuCreationEvaluation</bpmn:incoming>
+      <bpmn:outgoing>flowCbuCreationRequired</bpmn:outgoing>
+      <bpmn:outgoing>completionWithoutCBUFlow</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="flowCbuCreationEvaluation" sourceRef="mambuAccountCreation" targetRef="Gateway_0j2vn5l" />
+    <bpmn:sequenceFlow id="flowCbuCreationRequired" name="CBU required" sourceRef="Gateway_0j2vn5l" targetRef="coelsaCBUCreation">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${cbu_creation_required}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_0m2vcla" name="Is Alias association required?">
+      <bpmn:incoming>flowAliasAssociationEvaluation</bpmn:incoming>
+      <bpmn:outgoing>flowAliasAssociation</bpmn:outgoing>
+      <bpmn:outgoing>completionWithoutAliasFlow</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="mambuCoelsaFlowCompleted" name="Flow Completed">
+      <bpmn:incoming>completionWithoutCBUFlow</bpmn:incoming>
+      <bpmn:incoming>coelsaCompletionFlow</bpmn:incoming>
+      <bpmn:incoming>completionWithoutAliasFlow</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="coelsaCBUCreation" name="CBU Creation" camunda:type="external" camunda:topic="cbu-creation">
+      <bpmn:incoming>flowCbuCreationRequired</bpmn:incoming>
+      <bpmn:outgoing>flowAliasAssociationEvaluation</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="coelsaAltaAlias" name="Alias Association" camunda:type="external" camunda:topic="alias-association">
+      <bpmn:incoming>flowAliasAssociation</bpmn:incoming>
+      <bpmn:outgoing>coelsaCompletionFlow</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="completionWithoutCBUFlow" name="CBU Creation Not Required" sourceRef="Gateway_0j2vn5l" targetRef="mambuCoelsaFlowCompleted">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!cbu_creation_required}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flowAliasAssociation" name="Alias Association Required" sourceRef="Gateway_0m2vcla" targetRef="coelsaAltaAlias">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${alias_association_required}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="coelsaCompletionFlow" sourceRef="coelsaAltaAlias" targetRef="mambuCoelsaFlowCompleted" />
+    <bpmn:sequenceFlow id="flowAliasAssociationEvaluation" sourceRef="coelsaCBUCreation" targetRef="Gateway_0m2vcla" />
+    <bpmn:sequenceFlow id="completionWithoutAliasFlow" name="Alias Association Not Required" sourceRef="Gateway_0m2vcla" targetRef="mambuCoelsaFlowCompleted">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!alias_association_required}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="accountCreationProcess">
+      <bpmndi:BPMNEdge id="Flow_1x8m6ok_di" bpmnElement="completionWithoutAliasFlow">
+        <di:waypoint x="950" y="182" />
+        <di:waypoint x="950" y="330" />
+        <di:waypoint x="1300" y="330" />
+        <di:waypoint x="1300" y="175" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1078" y="296" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k3ztcu_di" bpmnElement="flowAliasAssociationEvaluation">
+        <di:waypoint x="830" y="157" />
+        <di:waypoint x="925" y="157" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="833" y="159" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dcisy5_di" bpmnElement="coelsaCompletionFlow">
+        <di:waypoint x="1180" y="157" />
+        <di:waypoint x="1282" y="157" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mhpr8v_di" bpmnElement="flowAliasAssociation">
+        <di:waypoint x="975" y="157" />
+        <di:waypoint x="1080" y="157" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="987" y="126" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z4jao6_di" bpmnElement="completionWithoutCBUFlow">
+        <di:waypoint x="560" y="182" />
+        <di:waypoint x="560" y="350" />
+        <di:waypoint x="1300" y="350" />
+        <di:waypoint x="1300" y="175" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="725" y="316" width="89" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fz6cbr_di" bpmnElement="flowCbuCreationRequired">
+        <di:waypoint x="585" y="157" />
+        <di:waypoint x="730" y="157" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="626" y="133" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ko61ct_di" bpmnElement="flowCbuCreationEvaluation">
+        <di:waypoint x="431" y="157" />
+        <di:waypoint x="535" y="157" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_065668u_di" bpmnElement="Flow_065668u">
+        <di:waypoint x="215" y="157" />
+        <di:waypoint x="331" y="157" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="accountCreationRequest">
+        <dc:Bounds x="179" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="159" y="182" width="81" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12q23y2_di" bpmnElement="mambuAccountCreation">
+        <dc:Bounds x="331" y="117" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0j2vn5l_di" bpmnElement="Gateway_0j2vn5l" isMarkerVisible="true">
+        <dc:Bounds x="535" y="132" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="471" y="107" width="78" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0m2vcla_di" bpmnElement="Gateway_0m2vcla" isMarkerVisible="true">
+        <dc:Bounds x="925" y="132" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="922" y="82" width="56" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_05f488z_di" bpmnElement="mambuCoelsaFlowCompleted">
+        <dc:Bounds x="1282" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1260" y="113" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fxhykc_di" bpmnElement="coelsaCBUCreation">
+        <dc:Bounds x="730" y="117" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10tyclt_di" bpmnElement="coelsaAltaAlias" bioc:stroke="rgb(229, 57, 53)" bioc:fill="rgb(255, 205, 210)">
+        <dc:Bounds x="1080" y="117" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
