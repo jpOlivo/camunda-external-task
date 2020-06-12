@@ -1,0 +1,16 @@
+# Layout
+layout : top-left
+
+# Look-and-Feel
+theme : night
+theme-override : assets/css/PITCHME.css
+logo : assets/images/logo.png
+highlight : ir-black
+
+# Behavior
+transition : none
+published : true
+
+# Plugins
+charts : true
+mathjax : TeX-AMS_HTML-full
